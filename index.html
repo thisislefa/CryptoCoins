@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crypto Market | Real-Time Tracker</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <link rel="stylesheet" href="crypto.css">
+</head>
+<body>
+
+    <div class="loading-overlay" id="loader">
+        <div class="spinner"></div>
+    </div>
+
+    <nav class="navbar">
+        <div class="nav-status">
+            <i class="fas fa-circle pulse-icon"></i>
+            <span>Live: Updates every 60 seconds</span>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="main-content">
+            <div class="breadcrumb">Live Market Insights <span id="breadCoin" style="margin-left:5px; color:var(--text-primary);">> Per Coin</span></div>
+            
+            <div class="header">
+                <div>
+                    <div class="coin-selector-wrapper">
+                        <div class="coin-title" onclick="toggleDropdown()">
+                            <img id="coinIcon" src="https://assets.coingecko.com/coins/images/1/large/bitcoin.png" class="coin-icon">
+                            <span id="coinName">Bitcoin</span> 
+                            <span id="coinSymbol" style="color: var(--text-secondary); margin-left: 8px; font-size: 18px;">BTC</span>
+                            <i class="fas fa-chevron-down" style="font-size: 14px; margin-left: 10px; color: var(--text-secondary);"></i>
+                        </div>
+                        <div class="coin-dropdown" id="coinDropdown">
+                            </div>
+                    </div>
+                    
+                    <div class="price-container">
+                        <div class="price" id="currentPrice">$0.00</div>
+                        <div class="price-change" id="priceChange">
+                            <i class="fas fa-caret-up"></i> <span>0.00%</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="header-actions">
+                    <i class="far fa-star" title="Watchlist"></i>
+                </div>
+            </div>
+
+            <div class="chart-controls">
+                <button class="time-btn" onclick="updateChartRange(1, this)">24H</button>
+                <button class="time-btn active" onclick="updateChartRange(7, this)">7D</button>
+                <button class="time-btn" onclick="updateChartRange(30, this)">1M</button>
+                <button class="time-btn" onclick="updateChartRange(90, this)">3M</button>
+                <button class="time-btn" onclick="updateChartRange(365, this)">1Y</button>
+            </div>
+
+            <div class="chart-container">
+                <canvas id="cryptoChart"></canvas>
+            </div>
+
+            <div>
+                <h2 class="market-data-title">Market Stats</h2>
+                <div class="market-data-grid">
+                    <div class="data-item">
+                        <span class="data-label">Market Cap</span>
+                        <span class="data-value" id="marketCap">---</span>
+                    </div>
+                    <div class="data-item">
+                        <span class="data-label">24H Volume</span>
+                        <span class="data-value" id="volume">---</span>
+                    </div>
+                    <div class="data-item">
+                        <span class="data-label">Circulating Supply</span>
+                        <span class="data-value" id="supply">---</span>
+                    </div>
+                    <div class="data-item">
+                        <span class="data-label">All-Time High</span>
+                        <span class="data-value" id="ath">---</span>
+                    </div>
+                    <div class="data-item">
+                        <span class="data-label">Rank</span>
+                        <span class="data-value" id="rank">#1</span>
+                    </div>
+                    <div class="data-item">
+                        <span class="data-label">High 24h</span>
+                        <span class="data-value" id="high24">---</span>
+                    </div>
+                    <div class="data-item">
+                        <span class="data-label">Low 24h</span>
+                        <span class="data-value" id="low24">---</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="sidebar">
+            <div class="buy-sell-tabs">
+                <button class="tab-btn active">Buy</button>
+                <button class="tab-btn">Sell</button>
+            </div>
+            
+            <div class="input-group">
+                <div class="amount-row">
+                    <input type="number" id="usdInput" class="amount-input" value="100" placeholder="0.00">
+                    <div class="currency-badge">USD</div>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <div class="amount-row">
+                    <input type="number" id="cryptoInput" class="amount-input" placeholder="0.00" readonly>
+                    <div class="currency-badge">
+                        <img id="sidebarIcon" src="https://assets.coingecko.com/coins/images/1/large/bitcoin.png" width="16">
+                        <span id="sidebarSymbol">BTC</span>
+                    </div>
+                </div>
+                <div class="conversion-text">1 <span id="convSymbol">BTC</span> ≈ <span id="convPrice">...</span> USD</div>
+            </div>
+
+            <div class="quick-amounts">
+                <button class="quick-btn" onclick="setAmount(50)">$50</button>
+                <button class="quick-btn" onclick="setAmount(100)">$100</button>
+                <button class="quick-btn" onclick="setAmount(500)">$500</button>
+                <button class="quick-btn" onclick="setAmount(1000)">$1K</button>
+            </div>
+
+            <h3 style="font-size: 16px; margin-bottom: 15px; font-weight: 500;">Pay with</h3>
+
+            <div class="payment-option selected" data-method="google">
+                <div style="display: flex; gap: 10px; align-items: center;">
+                    <i class="fab fa-google-pay" style="font-size: 24px;"></i>
+                    <span style="font-weight: 500;">Google Pay</span>
+                </div>
+                <i class="fas fa-check-circle" style="color: var(--accent-blue);"></i>
+            </div>
+
+            <div class="payment-option" data-method="apple">
+                <div style="display: flex; gap: 10px; align-items: center;">
+                    <i class="fab fa-apple-pay" style="font-size: 20px;"></i>
+                    <div style="display: flex; flex-direction: column;">
+                        <span style="font-weight: 500;">Apple Pay</span>
+                    </div>
+                </div>
+                <i class="fas fa-check-circle" style="color: var(--accent-blue);"></i>
+            </div>
+
+            <div class="payment-option" data-method="card">
+                <div style="display: flex; gap: 10px; align-items: center;">
+                    <i class="far fa-credit-card" style="font-size: 20px;"></i>
+                    <div style="display: flex; flex-direction: column;">
+                        <span style="font-weight: 500;">Credit Card</span>
+                        <span style="font-size: 12px; color: var(--text-secondary);">Visa / Mastercard</span>
+                    </div>
+                </div>
+                <i class="fas fa-check-circle" style="color: var(--accent-blue);"></i>
+            </div>
+
+            <button class="buy-btn" id="buyBtn">Buy Bitcoin</button>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-text">
+                &copy; <script>document.write(new Date().getFullYear())</script> Cryptocurrency Coins. All rights reserved.
+            </div>
+            <div class="footer-text">
+                Data provided by CoinGecko API. This is a demo application.
+            </div>
+        </div>
+    </footer>
+
+    <script src="crypto.js"></script>
+</body>
+</html>
