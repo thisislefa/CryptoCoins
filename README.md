@@ -3,8 +3,15 @@
 ## Overview
 CryptoCoins is a sophisticated, production-grade cryptocurrency dashboard that provides real-time market data, interactive charts, and simulated trading capabilities. Built with modern web technologies, this application offers a professional trading interface experience with live data updates from the CoinGecko API.
 
+
+## Interface Preview
+The following interface demonstrates the integration of live market data for major cryptocurrency assets. The layout is engineered to provide a high-density overview of price action, market capitalization, and percentage fluctuations, utilizing a clean modular system for financial clarity.
+
+<img width="1920" height="1393" alt="crypto" src="https://github.com/user-attachments/assets/4dd69c15-69d9-487e-8842-58c5f08016ae" />
+
 ## Live Demo
 **Experience the live application:** [CryptoCoins](https://thisislefa.github.io/CryptoCoins)
+
 
 ## Key Features
 
@@ -338,4 +345,6 @@ For issues, suggestions, or contributions:
 **Category**: Cryptocurrency Dashboard / Financial Application   
 **Last Updated**: Dec 14, 2025  
 **Technology Stack**: HTML5, CSS3, JavaScript ES6+, Chart.js, CoinGecko API
+
+
 
