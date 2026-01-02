@@ -230,11 +230,7 @@
         }
 
         function handleBuyAction() {
-             alert(`TRANSACTION BLOCKED! This application is a personal project intended for demonstration and portfolio purposes only. The Buy/Sell functionality, payment processing, and order execution are not implemented in this demo.
-                
-                Current Coin: ${currentCoin.name}
-                Amount: ${document.getElementById('usdInput').value} USD
-                Method: ${document.querySelector('.payment-option.selected')?.dataset.method || 'Not Selected'}
+             alert(`TRANSACTION NOT FUNCTIONAL! This application is a personal project intended for demonstration and portfolio purposes only. The Buy/Sell functionality, payment processing, and order execution are not implemented in this demo. Current Coin: ${currentCoin.name}, Amount: ${document.getElementById('usdInput').value} USD, Method: ${document.querySelector('.payment-option.selected')?.dataset.method || 'Not Selected'}
             `);
         }
 
